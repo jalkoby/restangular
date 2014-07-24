@@ -988,6 +988,30 @@ Create custom methods for your models using Restangular.extendModel(). This is a
   });
 ```
 
+## Adding Custom Methods to Services
+
+Create custom methods for a particular service:
+```js
+app.factory("User", ["Restangular", function(Restangular) {
+  var User = Restangular.service("users");
+  User.paginate = function(page) {
+    return this.getList({page: page});
+  }
+  return User;
+}]);
+```
+
+Add custom methods for all services:
+```js
+app.config(["RestangularProvider", function(RestangularProvider) {
+  RestangularProvider.extendServices({
+    paginate: function(page) {
+      return this.getList({page: page});
+    }
+  });
+}]);
+```
+
 # FAQ
 
 #### **How can I handle errors?**
