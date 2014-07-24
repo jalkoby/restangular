@@ -446,6 +446,12 @@ module.provider('Restangular', function() {
       return object.addElementTransformer(route, false, fn);
     };
 
+    config.serviceMixin = config.serviceMixin || {};
+    object.extendServices = function(newMixin) {
+      config.serviceMixin = _.extend(config.serviceMixin, newMixin);
+      return this;
+    }
+
     config.transformElem = function(elem, isCollection, route, Restangular, force) {
       if (!force && !config.transformLocalElements && !elem[config.restangularFields.fromServer]) {
         return elem;
@@ -1265,7 +1271,7 @@ module.provider('Restangular', function() {
       }
 
       function toService(route, parent) {
-        var serv = {};
+        var serv = _.extend({}, config.serviceMixin);
         var collection = (parent || service).all(route);
         serv.one = _.bind(one, (parent || service), parent, route);
         serv.post = _.bind(collection.post, collection);
